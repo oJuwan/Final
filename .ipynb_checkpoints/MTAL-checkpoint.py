@@ -1,5 +1,6 @@
 #MTAL --> Membrane test automatic loop
 #This one autosets the y axis 
+# Needs to run pip instll pyabf
 
 import os
 import tkinter as tk
