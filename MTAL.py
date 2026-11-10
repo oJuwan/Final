@@ -2,15 +2,33 @@
 #This one autosets the y axis 
 
 import os
+import tkinter as tk
+from tkinter import filedialog
 import pyabf
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Set the WD
-os.chdir('/Users/sulkowskim1/Documents/Voltage_Project/Kir21-HS-FLP_Recordings')
+# ------------------------------- file selection dialog ---------------------------------
+root = tk.Tk()
+root.withdraw()
+root.attributes('-topmost', True)  # Brings the file picker window to the front
+
+file_path = filedialog.askopenfilename(
+    title="Select ABF Membrane Test File",
+    filetypes=[("ABF files", "*.abf"), ("All files", "*.*")]
+)
+
+if not file_path:
+    raise ValueError("No file selected. Please re-run the script and choose an ABF file.")
+
+data_dir = os.path.dirname(file_path)
+abf_file_name = os.path.basename(file_path)
+
+# Set the working directory to the data file's folder
+os.chdir(data_dir)
+print(f"Loaded file: {abf_file_name}\nWorking directory set to: {data_dir}")
 
 # Load the data from the ABF file
-abf_file_name = "Kir-HS-FLP-24Hrs-Animal2-A3-L-MT.abf"
 abf = pyabf.ABF(abf_file_name)
 
 # Set the sweep
@@ -119,10 +137,7 @@ while True: ##Looping
     # Close the figure to free up memory
     plt.close(fig)
         
-    # Return WD
-    os.chdir('/Users/sulkowskim1/Documents/Python/E-Phys-Programs')
-    
-     #Looping
+    #Looping
     repeat = input('Do you want to plot another range? (y/n): ').lower()
     if repeat != 'y':
         break  # exit the loop if the user enters anything other than 'yes'
